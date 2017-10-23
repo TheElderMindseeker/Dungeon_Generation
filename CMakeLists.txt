@@ -11,5 +11,9 @@ set (SOURCE_FILES
         es/Metainfo.hpp
         es/level_evaluator.cpp
         es/level_evaluator.hpp
-        es/mutation.cpp es/mutation.hpp)
+        es/mutation.cpp
+        es/mutation.hpp
+        es/display_dungeon.cpp
+        es/display_dungeon.hpp
+        )
 add_executable (Dungeon_Generation ${SOURCE_FILES})

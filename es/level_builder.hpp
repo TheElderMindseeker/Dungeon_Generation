@@ -1,0 +1,66 @@
+//
+// Created by Даниил on 22.10.2017.
+//
+
+#ifndef DUNGEON_GENERATION_LEVEL_BUILDER_HPP
+#define DUNGEON_GENERATION_LEVEL_BUILDER_HPP
+
+
+#include "Genotype.hpp"
+
+
+const int LEVEL_SIZE = 50;
+
+const int VOID = 0;
+const int FREE = 1;
+const int WALL = 2;
+const int MONSTER = 3;
+const int TREASURE = 4;
+const int START = 5;
+const int EXIT = 6;
+
+
+void generate_dungeon (Genotype &&genotype, int dungeon [LEVEL_SIZE][LEVEL_SIZE]) {
+    for (int i = 0; i < LEVEL_SIZE; i++)
+        for (int j = 0; j < LEVEL_SIZE; j++)
+            dungeon [i][j] = VOID;
+
+    for (auto iter = genotype.rooms.begin (); iter != genotype.rooms.end (); iter++) {
+        for (int x = iter->x; x < iter->x + iter->w; x++) {
+            if (dungeon [iter->y][x] != FREE)
+                dungeon [iter->y][x] = WALL;
+            if (dungeon [iter->y + iter->h][x] != FREE)
+                dungeon [iter->y + iter->h][x] = WALL;
+        }
+        for (int y = iter->y; y < iter->y + iter->h; y++) {
+            if (dungeon [y][iter->x] != FREE)
+                dungeon [y][iter->x] = WALL;
+            if (dungeon [y][iter->x + iter->w] != FREE)
+                dungeon [y][iter->x + iter->w] = WALL;
+        }
+        for (int y = iter->y + 1; y < iter->y + iter->h - 1; y++) {
+            for (int x = iter->x + 1; x < iter->x + iter->w - 1; x++) {
+                dungeon [y][x] = FREE;
+            }
+        }
+    }
+
+    for (auto iter = genotype.entities.begin (); iter != genotype.entities.end (); iter++) {
+        if (dungeon [iter->y][iter->x] == FREE) {
+            if (iter->e == 0)
+                dungeon [iter->y][iter->x] = MONSTER;
+            else
+                dungeon [iter->y][iter->x] = TREASURE;
+        }
+    }
+
+    if (dungeon [genotype.start.y][genotype.start.x] == FREE) {
+        dungeon [genotype.start.y][genotype.start.x] = START;
+    }
+    if (dungeon [genotype.exit.y][genotype.exit.x] == FREE) {
+        dungeon [genotype.exit.y][genotype.exit.x] = EXIT;
+    }
+}
+
+
+#endif //DUNGEON_GENERATION_LEVEL_BUILDER_HPP

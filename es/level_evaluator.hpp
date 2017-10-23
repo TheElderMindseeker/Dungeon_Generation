@@ -9,6 +9,8 @@
 #include "level_builder.hpp"
 
 
+// TODO: Add Doxygen documentation
+
 void level_evaluator (int dungeon [LEVEL_SIZE][LEVEL_SIZE], Metainfo &metainfo);
 
 void reachable_area (int dungeon [LEVEL_SIZE][LEVEL_SIZE], Metainfo &metainfo,

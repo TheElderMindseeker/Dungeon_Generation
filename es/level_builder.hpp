@@ -21,7 +21,7 @@ const int START = 5;
 const int EXIT = 6;
 
 
-void generate_dungeon(Genotype &&genotype, int dungeon[LEVEL_SIZE][LEVEL_SIZE], Metainfo &metainfo);
+void generate_dungeon (const Genotype &genotype, int dungeon [LEVEL_SIZE][LEVEL_SIZE], Metainfo &metainfo);
 
 
 #endif //DUNGEON_GENERATION_LEVEL_BUILDER_HPP

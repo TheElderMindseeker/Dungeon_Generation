@@ -33,15 +33,19 @@ void level_evaluator (int dungeon [LEVEL_SIZE][LEVEL_SIZE], Metainfo &metainfo) 
 
 void reachable_area (int dungeon [LEVEL_SIZE][LEVEL_SIZE], Metainfo &metainfo,
                      int start_x, int start_y) {
+    static bool visited [LEVEL_SIZE][LEVEL_SIZE];
     int curr_x = start_x, curr_y = start_y;
     std::stack<std::pair<int, int>> path;
-    bool visited [LEVEL_SIZE][LEVEL_SIZE] = { { false } };
+
+    for (int y = 0; y < LEVEL_SIZE; y++)
+        for (int x = 0; x < LEVEL_SIZE; x++)
+            visited [y][x] = false;
 
     int reachable = 1;
     path.push (std::make_pair (start_x, start_y));
     visited [start_y][start_x] = true;
     while (! path.empty ()) {
-        if (dungeon [curr_y - 1][curr_x] != VOID && dungeon [curr_y - 1][curr_x] != WALL && ! visited [curr_y - 1][curr_x]) {
+        if (curr_y > 0 && dungeon [curr_y - 1][curr_x] != VOID && dungeon [curr_y - 1][curr_x] != WALL && ! visited [curr_y - 1][curr_x]) {
             path.push (std::make_pair (curr_x, curr_y));
             --curr_y;
             visited [curr_y][curr_x] = true;
@@ -50,7 +54,7 @@ void reachable_area (int dungeon [LEVEL_SIZE][LEVEL_SIZE], Metainfo &metainfo,
             if (dungeon [curr_y][curr_x] == EXIT)
                 metainfo.exit_reachable = true;
         }
-        else if (dungeon [curr_y][curr_x + 1] != VOID && dungeon [curr_y][curr_x + 1] != WALL && ! visited [curr_y][curr_x + 1]) {
+        else if (curr_x < LEVEL_SIZE - 1 && dungeon [curr_y][curr_x + 1] != VOID && dungeon [curr_y][curr_x + 1] != WALL && ! visited [curr_y][curr_x + 1]) {
             path.push (std::make_pair (curr_x, curr_y));
             ++curr_x;
             visited [curr_y][curr_x] = true;
@@ -59,7 +63,7 @@ void reachable_area (int dungeon [LEVEL_SIZE][LEVEL_SIZE], Metainfo &metainfo,
             if (dungeon [curr_y][curr_x] == EXIT)
                 metainfo.exit_reachable = true;
         }
-        else if (dungeon [curr_y + 1][curr_x] != VOID && dungeon [curr_y + 1][curr_x] != WALL && ! visited [curr_y + 1][curr_x]) {
+        else if (curr_y < LEVEL_SIZE - 1 && dungeon [curr_y + 1][curr_x] != VOID && dungeon [curr_y + 1][curr_x] != WALL && ! visited [curr_y + 1][curr_x]) {
             path.push (std::make_pair (curr_x, curr_y));
             ++curr_y;
             visited [curr_y][curr_x] = true;
@@ -68,7 +72,7 @@ void reachable_area (int dungeon [LEVEL_SIZE][LEVEL_SIZE], Metainfo &metainfo,
             if (dungeon [curr_y][curr_x] == EXIT)
                 metainfo.exit_reachable = true;
         }
-        else if (dungeon [curr_y][curr_x - 1] != VOID && dungeon [curr_y][curr_x - 1] != WALL && ! visited [curr_y][curr_x - 1]) {
+        else if (curr_x > 0 && dungeon [curr_y][curr_x - 1] != VOID && dungeon [curr_y][curr_x - 1] != WALL && ! visited [curr_y][curr_x - 1]) {
             path.push (std::make_pair (curr_x, curr_y));
             --curr_x;
             visited [curr_y][curr_x] = true;
@@ -89,9 +93,9 @@ void reachable_area (int dungeon [LEVEL_SIZE][LEVEL_SIZE], Metainfo &metainfo,
 
 
 float fitness (Metainfo &&metainfo) {
-    if (! (metainfo.start_exist && metainfo.exit_exist && metainfo.exit_reachable))
-        return 0.0f;
-
     return 100.0f + 100.0f * ((float) metainfo.reachable_area / metainfo.overall_area)
+           + (metainfo.start_exist ? 200.0f : 0.0f)
+           + (metainfo.exit_exist ? 100.0f : 0.0f)
+           + (metainfo.exit_reachable ? 50.0f : 0.0f)
            - 10.0f * (std::abs ((float) metainfo.treasures - metainfo.monsters));
 }

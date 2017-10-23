@@ -6,16 +6,26 @@
 #define DUNGEON_GENERATION_EVOLUTION_HPP
 
 
+#include <cstddef>
+
 #include "Genotype.hpp"
+#include "level_builder.hpp"
 
 
-void create_initial_population (Genotype **population, size_t mu);
+struct GenotypeComparator {
+    bool operator () (const Genotype &a, const Genotype &b);
 
-void copy_parent_population (Genotype *population [], size_t pop_size, size_t mu);
+    int dungeon_a [LEVEL_SIZE][LEVEL_SIZE];
+    int dungeon_b [LEVEL_SIZE][LEVEL_SIZE];
+};
 
-void mutate_population (Genotype *population [], size_t pop_size, size_t mutate_factor);
+void create_initial_population (std::vector<Genotype> &population, size_t mu);
 
-void choose_fittest (Genotype *population [], size_t pop_size, size_t lambda);
+void copy_parent_population (std::vector<Genotype> &population, size_t pop_size, size_t mu);
+
+void mutate_population (std::vector<Genotype> &population, size_t pop_size, size_t mutate_factor);
+
+void choose_fittest (std::vector<Genotype> &population, size_t pop_size);
 
 
 #endif //DUNGEON_GENERATION_EVOLUTION_HPP

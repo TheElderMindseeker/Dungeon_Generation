@@ -5,7 +5,7 @@
 #include "level_builder.hpp"
 
 
-void generate_dungeon(Genotype &&genotype, int dungeon[LEVEL_SIZE][LEVEL_SIZE], Metainfo &metainfo) {
+void generate_dungeon (const Genotype &genotype, int dungeon [LEVEL_SIZE][LEVEL_SIZE], Metainfo &metainfo) {
     for (int i = 0; i < LEVEL_SIZE; i++)
         for (int j = 0; j < LEVEL_SIZE; j++)
             dungeon [i][j] = VOID;

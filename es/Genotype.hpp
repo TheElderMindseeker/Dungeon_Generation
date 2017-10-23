@@ -36,6 +36,20 @@ struct Point {
 
 
 struct Genotype {
+    Genotype () = default;
+
+    Genotype (const Genotype &other) : rooms (other.rooms), entities (other.entities) {
+        this->start = other.start;
+        this->exit = other.exit;
+    }
+
+    const Genotype &operator = (const Genotype &other) {
+        this->rooms = other.rooms;
+        this->entities = other.entities;
+        this->start = other.start;
+        this->exit = other.exit;
+    }
+
     std::vector<Room> rooms;
     std::vector<Entity> entities;
     Point start;

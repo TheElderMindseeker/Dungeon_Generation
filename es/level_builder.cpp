@@ -5,15 +5,6 @@
 #include "level_builder.hpp"
 
 
-const int VOID = 0;
-const int FREE = 1;
-const int WALL = 2;
-const int MONSTER = 3;
-const int TREASURE = 4;
-const int START = 5;
-const int EXIT = 6;
-
-
 void generate_dungeon(Genotype &&genotype, int dungeon[LEVEL_SIZE][LEVEL_SIZE], Metainfo &metainfo) {
     for (int i = 0; i < LEVEL_SIZE; i++)
         for (int j = 0; j < LEVEL_SIZE; j++)
@@ -23,14 +14,14 @@ void generate_dungeon(Genotype &&genotype, int dungeon[LEVEL_SIZE][LEVEL_SIZE], 
         for (int x = iter->x; x < iter->x + iter->w; x++) {
             if (dungeon [iter->y][x] != FREE)
                 dungeon [iter->y][x] = WALL;
-            if (dungeon [iter->y + iter->h][x] != FREE)
-                dungeon [iter->y + iter->h][x] = WALL;
+            if (dungeon [iter->y + iter->h - 1][x] != FREE)
+                dungeon [iter->y + iter->h - 1][x] = WALL;
         }
         for (int y = iter->y; y < iter->y + iter->h; y++) {
             if (dungeon [y][iter->x] != FREE)
                 dungeon [y][iter->x] = WALL;
-            if (dungeon [y][iter->x + iter->w] != FREE)
-                dungeon [y][iter->x + iter->w] = WALL;
+            if (dungeon [y][iter->x + iter->w - 1] != FREE)
+                dungeon [y][iter->x + iter->w - 1] = WALL;
         }
         for (int y = iter->y + 1; y < iter->y + iter->h - 1; y++) {
             for (int x = iter->x + 1; x < iter->x + iter->w - 1; x++) {

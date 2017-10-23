@@ -12,13 +12,13 @@
 
 const int LEVEL_SIZE = 50;
 
-extern const int VOID;
-extern const int FREE;
-extern const int WALL;
-extern const int MONSTER;
-extern const int TREASURE;
-extern const int START;
-extern const int EXIT;
+const int VOID = 0;
+const int FREE = 1;
+const int WALL = 2;
+const int MONSTER = 3;
+const int TREASURE = 4;
+const int START = 5;
+const int EXIT = 6;
 
 
 void generate_dungeon(Genotype &&genotype, int dungeon[LEVEL_SIZE][LEVEL_SIZE], Metainfo &metainfo);

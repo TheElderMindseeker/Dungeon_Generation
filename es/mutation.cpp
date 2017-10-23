@@ -54,7 +54,6 @@ void mutate (Genotype &genotype) {
     }
 }
 
-const int MU_ADD_ROOM = 0;
 void mu_add_room (Genotype &genotype) {
     static std::uniform_int_distribution<int> position_distribution (0, LEVEL_SIZE - 4);
     static std::uniform_int_distribution<int> size_distribution (3, 20);
@@ -73,7 +72,6 @@ void mu_add_room (Genotype &genotype) {
     genotype.rooms.push_back (room);
 }
 
-const int MU_DELETE_ROOM = 1;
 void mu_delete_room (Genotype &genotype) {
     if (genotype.rooms.empty ())
         return;
@@ -86,7 +84,6 @@ void mu_delete_room (Genotype &genotype) {
     genotype.rooms.erase (iter);
 }
 
-const int MU_CHANGE_ROOM = 2;
 void mu_change_room (Genotype &genotype) {
     static std::uniform_int_distribution<int> position_distribution (0, LEVEL_SIZE - 4);
     static std::uniform_int_distribution<int> size_distribution (3, 20);
@@ -112,7 +109,6 @@ void mu_change_room (Genotype &genotype) {
     genotype.rooms [index] = room;
 }
 
-const int MU_ADD_MONSTER = 3;
 void mu_add_monster (Genotype &genotype) {
     static std::uniform_int_distribution<int> position_distribution (0, LEVEL_SIZE - 1);
 
@@ -124,7 +120,6 @@ void mu_add_monster (Genotype &genotype) {
     genotype.entities.push_back (monster);
 }
 
-const int MU_ADD_TREASURE = 4;
 void mu_add_treasure (Genotype &genotype) {
     static std::uniform_int_distribution<int> position_distribution (0, LEVEL_SIZE - 1);
 
@@ -136,7 +131,6 @@ void mu_add_treasure (Genotype &genotype) {
     genotype.entities.push_back (treasure);
 }
 
-const int MU_DELETE_ENTITY = 5;
 void mu_delete_entity (Genotype &genotype) {
     if (genotype.entities.empty ())
         return;
@@ -149,7 +143,6 @@ void mu_delete_entity (Genotype &genotype) {
     genotype.entities.erase (iter);
 }
 
-const int MU_CHANGE_ENTITY_POSITION = 6;
 void mu_change_entity_position (Genotype &genotype) {
     static std::uniform_int_distribution<int> position_distribution (0, LEVEL_SIZE - 1);
 
@@ -167,7 +160,6 @@ void mu_change_entity_position (Genotype &genotype) {
     genotype.entities [index] = entity;
 }
 
-const int MU_CHANGE_START_POSITION = 7;
 void mu_change_start_position (Genotype &genotype) {
     static std::uniform_int_distribution<int> position_distribution (0, LEVEL_SIZE - 1);
 
@@ -179,7 +171,6 @@ void mu_change_start_position (Genotype &genotype) {
     genotype.start = start;
 }
 
-const int MU_CHANGE_EXIT_POSITION = 8;
 void mu_change_exit_position (Genotype &genotype) {
     static std::uniform_int_distribution<int> position_distribution (0, LEVEL_SIZE - 1);
 

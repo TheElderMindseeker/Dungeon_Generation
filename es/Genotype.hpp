@@ -13,6 +13,9 @@
 const int E_MONSTER = 0;
 const int E_TREASURE = 1;
 
+const int ORI_VERTICAL = 0;
+const int ORI_HORIZONTAL = 1;
+
 
 struct Room {
     int x;
@@ -22,8 +25,16 @@ struct Room {
 };
 
 
+struct Corridor {
+    int start;
+    int finish;
+    int axe;
+    int orientation;
+};
+
+
 struct Entity {
-    int e;
+    int type;
     int x;
     int y;
 };
@@ -38,7 +49,7 @@ struct Point {
 struct Genotype {
     Genotype () = default;
 
-    Genotype (const Genotype &other) : rooms (other.rooms), entities (other.entities) {
+    Genotype (const Genotype &other) : rooms (other.rooms), entities (other.entities), corridors (other.corridors) {
         this->start = other.start;
         this->exit = other.exit;
     }
@@ -46,12 +57,14 @@ struct Genotype {
     const Genotype &operator = (const Genotype &other) {
         this->rooms = other.rooms;
         this->entities = other.entities;
+        this->corridors = other.corridors;
         this->start = other.start;
         this->exit = other.exit;
     }
 
     std::vector<Room> rooms;
     std::vector<Entity> entities;
+    std::vector<Corridor> corridors;
     Point start;
     Point exit;
 };

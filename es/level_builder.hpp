@@ -17,8 +17,9 @@ const int FREE = 1;
 const int WALL = 2;
 const int MONSTER = 3;
 const int TREASURE = 4;
-const int START = 5;
-const int EXIT = 6;
+const int DOOR = 5;
+const int START = 6;
+const int EXIT = 7;
 
 
 void generate_dungeon (const Genotype &genotype, int dungeon [LEVEL_SIZE][LEVEL_SIZE], Metainfo &metainfo);

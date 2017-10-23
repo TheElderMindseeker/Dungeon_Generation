@@ -93,9 +93,9 @@ void reachable_area (int dungeon [LEVEL_SIZE][LEVEL_SIZE], Metainfo &metainfo,
 
 
 float fitness (Metainfo &&metainfo) {
-    return 100.0f + 100.0f * ((float) metainfo.reachable_area / metainfo.overall_area)
+    return 100.0f * ((float) metainfo.reachable_area / metainfo.overall_area)
            + (metainfo.start_exist ? 200.0f : 0.0f)
-           + (metainfo.exit_exist ? 100.0f : 0.0f)
-           + (metainfo.exit_reachable ? 50.0f : 0.0f)
+           + (metainfo.exit_exist ? 200.0f : 0.0f)
+           + (metainfo.exit_reachable ? 300.0f : 0.0f)
            - 10.0f * (std::abs ((float) metainfo.treasures - metainfo.monsters));
 }

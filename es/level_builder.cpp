@@ -30,9 +30,56 @@ void generate_dungeon (const Genotype &genotype, int dungeon [LEVEL_SIZE][LEVEL_
         }
     }
 
+    for (auto iter = genotype.corridors.begin (); iter != genotype.corridors.end (); iter++) {
+        if (iter->orientation == ORI_VERTICAL) {
+            for (int x = iter->axe - 1; x <= iter->axe + 1; x++) {
+                if (dungeon[iter->start - 1][x] != FREE)
+                    dungeon[iter->start - 1][x] = WALL;
+                if (dungeon[iter->finish + 1][x] != FREE)
+                    dungeon[iter->finish + 1][x] = WALL;
+            }
+
+            for (int y = iter->start; y <= iter->finish; y++) {
+                if (dungeon [y][iter->axe - 1] != FREE)
+                    dungeon [y][iter->axe - 1] = WALL;
+                if (dungeon [y][iter->axe + 1] != FREE)
+                    dungeon [y][iter->axe + 1] = WALL;
+
+                if (dungeon [y][iter->axe] == WALL) {
+                    dungeon [y][iter->axe] = DOOR;
+                }
+                else {
+                    dungeon[y][iter->axe] = FREE;
+                }
+            }
+        }
+        else if (iter->orientation == ORI_HORIZONTAL) {
+            for (int y = iter->axe - 1; y <= iter->axe + 1; y++) {
+                if (dungeon [y][iter->start - 1] != FREE)
+                    dungeon [y][iter->start - 1] = WALL;
+                if (dungeon [y][iter->finish + 1] != FREE)
+                    dungeon [y][iter->finish + 1] = WALL;
+            }
+
+            for (int x = iter->start; x <= iter->finish; x++) {
+                if (dungeon [iter->axe - 1][x] != FREE)
+                    dungeon [iter->axe - 1][x] = WALL;
+                if (dungeon [iter->axe + 1][x] != FREE)
+                    dungeon [iter->axe + 1][x] = WALL;
+
+                if (dungeon [iter->axe][x] == WALL) {
+                    dungeon [iter->axe][x] = DOOR;
+                }
+                else {
+                    dungeon[iter->axe][x] = FREE;
+                }
+            }
+        }
+    }
+
     for (auto iter = genotype.entities.begin (); iter != genotype.entities.end (); iter++) {
         if (dungeon [iter->y][iter->x] == FREE) {
-            if (iter->e == 0) {
+            if (iter->type == 0) {
                 dungeon [iter->y][iter->x] = MONSTER;
                 ++metainfo.monsters;
             }

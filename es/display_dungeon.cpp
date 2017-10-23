@@ -23,11 +23,15 @@ void output_dungeon_image_ascii (std::ostream &output, int dungeon [LEVEL_SIZE][
                     break;
 
                 case MONSTER:
-                    symbol = '$';
+                    symbol = '&';
                     break;
 
                 case TREASURE:
-                    symbol = '?';
+                    symbol = '$';
+                    break;
+
+                case DOOR:
+                    symbol = 'H';
                     break;
 
                 case START:

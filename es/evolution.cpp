@@ -38,6 +38,8 @@ void create_initial_population (std::vector<Genotype> &population, size_t mu) {
 
         for (int j = 0; j < 10; j++) {
             mu_add_room (genotype);
+            if (j % 2 == 0)
+                mu_add_corridor (genotype);
             mu_add_monster (genotype);
             mu_add_treasure (genotype);
         }

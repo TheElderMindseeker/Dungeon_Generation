@@ -15,5 +15,7 @@ set (SOURCE_FILES
         es/mutation.hpp
         es/display_dungeon.cpp
         es/display_dungeon.hpp
+        es/evolution.cpp
+        es/evolution.hpp
         )
 add_executable (Dungeon_Generation ${SOURCE_FILES})

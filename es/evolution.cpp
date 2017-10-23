@@ -63,7 +63,7 @@ void copy_parent_population (std::vector<Genotype> &population, size_t pop_size,
 void mutate_population (std::vector<Genotype> &population, size_t pop_size, size_t mutate_factor) {
     for (size_t i = 0; i < pop_size; i++) {
         for (size_t j = 0; j < mutate_factor; j++) {
-            mutate (population[j]);
+            mutate (population[i]);
         }
     }
 }

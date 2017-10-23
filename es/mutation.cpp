@@ -75,7 +75,7 @@ void mu_add_room (Genotype &genotype) {
 
 const int MU_DELETE_ROOM = 1;
 void mu_delete_room (Genotype &genotype) {
-    if (genotype.rooms.size () <= 0)
+    if (genotype.rooms.empty ())
         return;
 
     std::uniform_int_distribution<int> index_distribution (0, genotype.rooms.size () - 1);
@@ -91,7 +91,7 @@ void mu_change_room (Genotype &genotype) {
     static std::uniform_int_distribution<int> position_distribution (0, LEVEL_SIZE - 4);
     static std::uniform_int_distribution<int> size_distribution (3, 20);
 
-    if (genotype.rooms.size () <= 0)
+    if (genotype.rooms.empty ())
         return;
 
     std::uniform_int_distribution<int> index_distribution (0, genotype.rooms.size () - 1);
@@ -113,19 +113,80 @@ void mu_change_room (Genotype &genotype) {
 }
 
 const int MU_ADD_MONSTER = 3;
-void mu_add_monster (Genotype &genotype);
+void mu_add_monster (Genotype &genotype) {
+    static std::uniform_int_distribution<int> position_distribution (0, LEVEL_SIZE - 1);
+
+    int x = position_distribution (engine);
+    int y = position_distribution (engine);
+
+    Entity monster = { E_MONSTER, x, y };
+
+    genotype.entities.push_back (monster);
+}
 
 const int MU_ADD_TREASURE = 4;
-void mu_add_treasure (Genotype &genotype);
+void mu_add_treasure (Genotype &genotype) {
+    static std::uniform_int_distribution<int> position_distribution (0, LEVEL_SIZE - 1);
+
+    int x = position_distribution (engine);
+    int y = position_distribution (engine);
+
+    Entity treasure = { E_TREASURE, x, y };
+
+    genotype.entities.push_back (treasure);
+}
 
 const int MU_DELETE_ENTITY = 5;
-void mu_delete_entity (Genotype &genotype);
+void mu_delete_entity (Genotype &genotype) {
+    if (genotype.entities.empty ())
+        return;
+
+    std::uniform_int_distribution<int> index_distribution (0, genotype.entities.size () - 1);
+    size_t index = (size_t) index_distribution (engine);
+
+    auto iter = genotype.entities.begin ();
+    iter += index;
+    genotype.entities.erase (iter);
+}
 
 const int MU_CHANGE_ENTITY_POSITION = 6;
-void mu_change_entity_position (Genotype &genotype);
+void mu_change_entity_position (Genotype &genotype) {
+    static std::uniform_int_distribution<int> position_distribution (0, LEVEL_SIZE - 1);
+
+    if (genotype.entities.empty ())
+        return;
+
+    std::uniform_int_distribution<int> index_distribution (0, genotype.entities.size () - 1);
+    size_t index = (size_t) index_distribution (engine);
+
+    int x = position_distribution (engine);
+    int y = position_distribution (engine);
+
+    Entity entity = { genotype.entities.at (index).e, x, y };
+
+    genotype.entities [index] = entity;
+}
 
 const int MU_CHANGE_START_POSITION = 7;
-void mu_change_start_position (Genotype &genotype);
+void mu_change_start_position (Genotype &genotype) {
+    static std::uniform_int_distribution<int> position_distribution (0, LEVEL_SIZE - 1);
+
+    int x = position_distribution (engine);
+    int y = position_distribution (engine);
+
+    Point start = { x, y };
+
+    genotype.start = start;
+}
 
 const int MU_CHANGE_EXIT_POSITION = 8;
-void mu_change_exit_position (Genotype &genotype);
+void mu_change_exit_position (Genotype &genotype) {
+    static std::uniform_int_distribution<int> position_distribution (0, LEVEL_SIZE - 1);
+
+    int x = position_distribution (engine);
+    int y = position_distribution (engine);
+
+    Point exit = { x, y };
+
+    genotype.exit = exit;
+}

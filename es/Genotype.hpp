@@ -10,6 +10,10 @@
 #include <vector>
 
 
+const int E_MONSTER = 0;
+const int E_TREASURE = 1;
+
+
 struct Room {
     int x;
     int y;

@@ -3,6 +3,7 @@
 //
 
 #include <stack>
+#include <cmath>
 #include "level_evaluator.hpp"
 
 
@@ -84,4 +85,13 @@ void reachable_area (int dungeon [LEVEL_SIZE][LEVEL_SIZE], Metainfo &metainfo,
     }
 
     metainfo.reachable_area = reachable;
+}
+
+
+float fitness (Metainfo &&metainfo) {
+    if (! (metainfo.start_exist && metainfo.exit_exist && metainfo.exit_reachable))
+        return 0.0f;
+
+    return 100.0f + 100.0f * ((float) metainfo.reachable_area / metainfo.overall_area)
+           - 10.0f * (std::abs ((float) metainfo.treasures - metainfo.monsters));
 }

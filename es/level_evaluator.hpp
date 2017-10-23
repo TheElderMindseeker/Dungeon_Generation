@@ -14,5 +14,7 @@ void level_evaluator (int dungeon [LEVEL_SIZE][LEVEL_SIZE], Metainfo &metainfo);
 void reachable_area (int dungeon [LEVEL_SIZE][LEVEL_SIZE], Metainfo &metainfo,
                      int start_x, int start_y);
 
+float fitness (Metainfo &&metainfo);
+
 
 #endif //DUNGEON_GENERATION_LEVEL_EVALUATOR_HPP

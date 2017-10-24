@@ -128,24 +128,53 @@ void mu_change_room (Genotype &genotype) {
 
 
 void mu_add_corridor (Genotype &genotype) {
-    static std::uniform_int_distribution<int> position_distribution (1, LEVEL_SIZE - 2);
+    static std::uniform_int_distribution<int> position_distribution (1, 4);
+    static std::uniform_int_distribution<int> length_distribution (5, 10);
     static std::uniform_int_distribution<int> type_distribution (ORI_VERTICAL, ORI_HORIZONTAL);
 
-    int s = position_distribution (engine);
-    int f = position_distribution (engine);
-    int a = position_distribution (engine);
-    int t = type_distribution (engine);
+    if (genotype.rooms.empty ())
+        return;
 
-    if (s > f) {
-        int temp = s;
-        s = f;
-        f = temp;
-    }
-    else if (s == f) {
-        ++f;
+    std::uniform_int_distribution<int> room_distribution (0, (unsigned) genotype.rooms.size () - 1);
+    int room_index = room_distribution (engine);
+    Room room = genotype.rooms.at ((unsigned long) room_index);
+
+    int s, f, a, ori;
+
+    switch (position_distribution (engine)) {
+        case 1:
+            ori = ORI_VERTICAL;
+            s = room.y;
+            f = std::max (room.y - length_distribution (engine), 1);
+            a = (2 * room.x + room.w) / 2;
+            break;
+
+        case 2:
+            ori = ORI_HORIZONTAL;
+            s = room.x + room.w;
+            f = std::min (room.x + room.w + length_distribution (engine), LEVEL_SIZE - 2);
+            a = (2 * room.y + room.h) / 2;
+            break;
+
+        case 3:
+            ori = ORI_VERTICAL;
+            s = room.y + room.h;
+            f = std::min (room.y + room.h + length_distribution (engine), LEVEL_SIZE - 2);
+            a = (2 * room.x + room.w) / 2;
+            break;
+
+        case 4:
+            ori = ORI_HORIZONTAL;
+            s = room.x;
+            f = std::max (room.x - length_distribution (engine), 1);
+            a = (2 * room.y + room.h) / 2;
+            break;
+
+        default:
+            return;
     }
 
-    Corridor corridor { s, f, a, t };
+    Corridor corridor { s, f, a, ori };
     genotype.corridors.push_back (corridor);
 }
 
@@ -164,27 +193,55 @@ void mu_delete_corridor (Genotype &genotype) {
 
 
 void mu_change_corridor (Genotype &genotype) {
-    static std::uniform_int_distribution<int> position_distribution (1, LEVEL_SIZE - 2);
+    static std::uniform_int_distribution<int> position_distribution (1, 4);
+    static std::uniform_int_distribution<int> length_distribution (5, 10);
     static std::uniform_int_distribution<int> type_distribution (ORI_VERTICAL, ORI_HORIZONTAL);
 
-    if (genotype.corridors.empty ())
+    if (genotype.corridors.empty () || genotype.rooms.empty ())
         return;
 
-    std::uniform_int_distribution<int> index_distribution (0, genotype.corridors.size () - 1);
-    size_t index = (size_t) index_distribution (engine);
+    std::uniform_int_distribution<int> room_distribution (0, (unsigned) genotype.rooms.size () - 1);
+    std::uniform_int_distribution<int> index_distribution (0, (unsigned) genotype.corridors.size () - 1);
+    int room_index = room_distribution (engine);
+    int index = index_distribution (engine);
+    Room room = genotype.rooms.at ((unsigned long) room_index);
 
-    int s = position_distribution (engine);
-    int f = position_distribution (engine);
-    int a = position_distribution (engine);
-    int t = type_distribution (engine);
+    int s, f, a, ori;
 
-    if (s >= f) {
-        int temp = s;
-        s = f;
-        f = temp;
+    switch (position_distribution (engine)) {
+        case 1:
+            ori = ORI_VERTICAL;
+            s = room.y;
+            f = std::max (room.y - length_distribution (engine), 1);
+            a = (2 * room.x + room.w) / 2;
+            break;
+
+        case 2:
+            ori = ORI_HORIZONTAL;
+            s = room.x + room.w;
+            f = std::min (room.x + room.w + length_distribution (engine), LEVEL_SIZE - 2);
+            a = (2 * room.y + room.h) / 2;
+            break;
+
+        case 3:
+            ori = ORI_VERTICAL;
+            s = room.y + room.h;
+            f = std::min (room.y + room.h + length_distribution (engine), LEVEL_SIZE - 2);
+            a = (2 * room.x + room.w) / 2;
+            break;
+
+        case 4:
+            ori = ORI_HORIZONTAL;
+            s = room.x;
+            f = std::max (room.x - length_distribution (engine), 1);
+            a = (2 * room.y + room.h) / 2;
+            break;
+
+        default:
+            return;
     }
 
-    Corridor corridor { s, f, a, t };
+    Corridor corridor { s, f, a, ori };
     genotype.corridors [index] = corridor;
 }
 
@@ -217,7 +274,7 @@ void mu_delete_entity (Genotype &genotype) {
     if (genotype.entities.empty ())
         return;
 
-    std::uniform_int_distribution<int> index_distribution (0, genotype.entities.size () - 1);
+    std::uniform_int_distribution<int> index_distribution (0, (unsigned) genotype.entities.size () - 1);
     size_t index = (size_t) index_distribution (engine);
 
     auto iter = genotype.entities.begin ();

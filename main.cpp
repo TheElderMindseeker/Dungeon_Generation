@@ -23,6 +23,7 @@ int main (int argc, char **argv) {
     for (int i = 0; i < 32; i++) {
         copy_parent_population (population, mu + lambda, mu);
         mutate_population (population, mu + lambda, 10);
+        // TODO: Fix bug with 'return code 11' (possibly bad corridor generation)
         choose_fittest (population, mu + lambda);
     }
 
